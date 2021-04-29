@@ -10,11 +10,16 @@ public class VaccineCenter {
 
     String Region;
     LinkedList<Client> Queue = new LinkedList<>();
-    int NumVaccinated
-    int NumSec
-    int
 
     public int getQueueSize(){
         return this.Queue.size();
+    }
+
+    public String getRegion() {
+        return Region;
+    }
+
+    public void setRegion(String region) {
+        Region = region;
     }
 }

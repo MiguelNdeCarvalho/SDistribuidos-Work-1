@@ -1,114 +1,265 @@
-import jdk.jfr.internal.tool.Print;
+package vaccine.manager;
 
+import java.util.LinkedList;
 import java.util.Scanner;  // Import the Scanner class
+import java.net.Socket;
+import java.io.*;
 
 public class Client {
 
-    private String Address = "localhost";
-    private int Port = 0;
-    
-    //Patient
-    String Name = "None";
-    int Cod = 0;
+    private String Address;
+    private int Port;
+    private Socket s;
+
+    public Client(){
+        
+        try{
+            Address = "localhost";
+            Port = 0;
+            s = new Socket(Address, Port);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
-    public Client(String name, String address, int port){
-        Name = name;
+    public Client(String address, int port){
         Address = address;
         Port = port;
     }
 
-    public setServer(String add, int p) {
+    public void setServer(String add, int p) {
         Address = add;
         Port = p;
     }
 
-    public void getCenterInfo(){
-
-    }
-
-    public void subscription(){
+    public static void getCenterInfo(Socket s,String center_region){
         
-    }
-
-    public void report(){
-        
-    }
-
-    public void vaccination(){
-        
-    }
-
-    public void statistic(){
-        
-    }
-
-    public void enviaPedido(Pedido p) {
-        try {
-            Socket s = new Socket(address, sPort);
+        //request
+        try{
             
-            // que Streams usar????
             OutputStream out = s.getOutputStream();
             ObjectOutputStream output = new ObjectOutputStream(out);
             
-            // escrever a mensagem?
-            output.writeObject(p);
-            
-            // ler a resposta e mostrar o resultado
+            Request new_request = new Request();
+            new_request.setOption(1);
+            new_request.getString_data().add(center_region);
+
+            output.writeObject(new_request);
+
+            //answear
             InputStream in = s.getInputStream();
             ObjectInputStream input = new ObjectInputStream(in);
             Object resposta = input.readObject();
 
-            // fechar o socket
-            s.close();
-            
-            // ver a resposta - modo simples
             System.out.println("RESPOSTA: " + resposta);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void subscription(Socket s,String user_name,String gender,String age){
+        
+        //request
+        try{
             
+            OutputStream out = s.getOutputStream();
+            ObjectOutputStream output = new ObjectOutputStream(out);
+            
+            Request new_request = new Request();
+            new_request.setOption(2);
+            new_request.getString_data().add(user_name);
+            new_request.getInt_data().add(Integer.parseInt(gender));
+            new_request.getInt_data().add(Integer.parseInt(age));
+
+            output.writeObject(new_request);
+            
+
+            //answear
+            InputStream in = s.getInputStream();
+            ObjectInputStream input = new ObjectInputStream(in);
+            Object resposta = input.readObject();
+
+            System.out.println("RESPOSTA: " + resposta);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
+    public static void report(Socket s, String cod, LinkedList<String> secEfects){
+        
+        //request
+        try{
+            
+            OutputStream out = s.getOutputStream();
+            ObjectOutputStream output = new ObjectOutputStream(out);
+            
+            Request new_request = new Request();
+            new_request.setOption(3);
+            new_request.getInt_data().add(Integer.parseInt(cod));
+            new_request.setString_data(secEfects);
+
+            output.writeObject(new_request);
+
+            //answear
+            InputStream in = s.getInputStream();
+            ObjectInputStream input = new ObjectInputStream(in);
+            Object resposta = input.readObject();
+
+            System.out.println("RESPOSTA: " + resposta);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void vaccination(Socket s, String cod){
+        
+        //request
+        try {
+            
+            OutputStream out = s.getOutputStream();
+            ObjectOutputStream output = new ObjectOutputStream(out);
+            
+            Request new_request = new Request();
+            new_request.setOption(4);
+            new_request.getInt_data().add(Integer.parseInt(cod));
+
+            output.writeObject(new_request);
+
+            //answear
+            InputStream in = s.getInputStream();
+            ObjectInputStream input = new ObjectInputStream(in);
+            Object resposta = input.readObject();
+
+            
+
+            System.out.println("RESPOSTA: " + resposta);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void statistic(Socket s){
+        
+        //request
+        try{
+            
+            OutputStream out = s.getOutputStream();
+            ObjectOutputStream output = new ObjectOutputStream(out);
+            
+            Request new_request = new Request();
+            new_request.setOption(5);
+        
+            output.writeObject(new_request);
+
+            //answear
+            InputStream in = s.getInputStream();
+            ObjectInputStream input = new ObjectInputStream(in);
+            Object resposta = input.readObject();
+
+            System.out.println("RESPOSTA: " + resposta);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
     public static void main(String[] args) {
         
+        Scanner scan = new Scanner(System.in);
+        String s = null;
+        int lidos;
+        byte[] b = new byte[256];
+
         Client user = new Client();
         int option;
 
+        //agrumentos com host e ip
+        //user.setServer(add,ip);
+
         System.out.println("Welcome to the system");
-        System.out.print("User: " + user);
 
-        while (1) {
-            
-            System.out.print("-----MENU-----");
-            System.out.print("1- Consulta de Centros de Vacinação (Nome + Comprimento)");
-            System.out.print("2- Inscrição para a vacina (Enviar Nome, Genero e Idade)");
-            System.out.print("3- Reportar Efeitos Secundários (antes da realização da vacina)");
-            System.out.print("4- Realização de uma vacina ( com codigo X --> remover o cidadão da lista de espera do centro onde se encontrava)");
-            System.out.print("5- Estatistica");
+        try {
+            while (true) {
+                
+                System.out.println("-----MENU-----");
+                System.out.println("1- Consulta de Centros de Vacinação (Nome + Comprimento)");
+                System.out.println("2- Inscrição para a vacina (Enviar Nome, Genero e Idade)");
+                System.out.println("3- Reportar Efeitos Secundários (antes da realização da vacina)");
+                System.out.println("4- Realização de uma vacina ( com codigo X --> remover o cidadão da lista de espera do centro onde se encontrava)");
+                System.out.println("5- Estatistica");
 
-            System.out.print("Insert option:");
-            Scanner scan = new Scanner(System.in);
-            option = scan.nextInt();
-            
-            if (option == 1) {
+                System.out.print("Insert option: ");
+                s = scan.nextLine();
+                option = Integer.parseInt(s);
                 
-            } else if (option == 2) {
-                
-            } else if (option == 3) {
-                
-            } else if (option == 4) {
-                
-            } else if (option == 5) {
-                
-            } else if (option == 6) {
-                
-            } else if (option == 7) {
-                
-            } else {
-                System.out.println("Invalid Option");
+                if (option == 1) {
+                    
+                    System.out.print("Insira a região do centro: ");
+                    lidos = System.in.read(b, 0, 256);
+                    String region = new String(b, 0, lidos - 1);
+                    Client.getCenterInfo(user.s, region);
+
+
+                } else if (option == 2) {
+
+                    System.out.print("Insira o nome: ");
+                    lidos = System.in.read(b, 0, 256);
+                    String name = new String(b, 0, lidos - 1);
+
+                    System.out.print("Insira o genero (1 -> M; 2 -> F):");
+                    lidos = System.in.read(b, 0, 256);
+                    String gen = new String(b, 0, lidos - 1);
+
+
+                    System.out.print("Insira a idade: ");
+                    lidos = System.in.read(b, 0, 256);
+                    String age = new String(b, 0, lidos - 1);
+
+                    Client.subscription(user.s, name, gen, age);
+                    
+                } else if (option == 3) {
+                    
+                    System.out.print("Insira o cod: ");
+                    lidos = System.in.read(b, 0, 256);
+                    String cod = new String(b, 0, lidos - 1);
+
+                    String efec = new String("");
+                    LinkedList<String> secEfects = new LinkedList<>(); 
+                    System.out.print("Insira o sintoma que sente: ");
+
+                    while (efec.equals("nao")) {
+
+                        lidos = System.in.read(b, 0, 256);
+                        efec = new String(b, 0, lidos - 1);
+                        secEfects.add(efec);
+                        System.out.print("Mais algum?: ");
+                    }
+
+                    Client.report(user.s, cod, secEfects);
+
+                } else if (option == 4) {
+                    
+                    System.out.print("Insira o cod: ");
+                    lidos = System.in.read(b, 0, 256);
+                    String cod = new String(b, 0, lidos - 1);
+
+                    Client.vaccination(user.s, cod);
+
+                } else if (option == 5) {
+                    
+                    Client.statistic(user.s);
+                                    
+                } else {
+                    System.out.println("Invalid Option");
+                }
             }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

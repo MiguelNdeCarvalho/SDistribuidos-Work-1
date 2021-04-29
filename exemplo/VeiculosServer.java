@@ -60,7 +60,7 @@ public class VeiculosServer {
 		Socket clientSocket = s.accept();
 		
 		try {
-		    Object objPedido= null;
+		    Object objPedido = null;
 		    // le os dados do pedido, como um OBJECTO "objPedido"		
 
 

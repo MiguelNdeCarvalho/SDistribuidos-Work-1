@@ -1,7 +1,4 @@
 package com.mkyong;
-
-import javax.smartcardio.ResponseAPDU;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +6,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.util.List;
-import antlr.collections.List;
 
 @SpringBootApplication
 public class StartApplication implements CommandLineRunner {

@@ -4,7 +4,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface InscricaoRepository extends CrudRepository<Centro, Long> {
+public interface InscricaoRepository extends CrudRepository<Inscricao, Long> {
 
     List<Centro> findById(long id);
     List<Centro> findByCentro(Centro centro);

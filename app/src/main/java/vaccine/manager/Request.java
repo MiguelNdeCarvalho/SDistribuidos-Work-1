@@ -1,8 +1,7 @@
-package vaccine.manager;
+//package vaccine.manager;
 
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.ListIterator;
 /**
  * Request
  */
@@ -43,15 +42,17 @@ public class Request implements java.io.Serializable{
         result = result + option + " ";
         
         Iterator<String> iterator_string = string_data.iterator();
-        while (iterator.hasNext()) {
+        while (iterator_string.hasNext()) {
             result = result + iterator_string.next() + " ";
         }
 
-        Iterator<Integer> iterator_int = string_int.iterator();
-        while (iterator.hasNext()) {
+        Iterator<Integer> iterator_int = int_data.iterator();
+        while (iterator_int.hasNext()) {
             result = result + iterator_int.next() + " ";
         }
 
         return "Request: " + result;
     }
+
+
 }

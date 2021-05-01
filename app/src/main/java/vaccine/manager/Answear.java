@@ -1,10 +1,11 @@
-package vaccine.manager;
+//package vaccine.manager;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public class Answear implements java.io.Serializable{
 
-    private int reply;
+    private int reply = 0;
     private LinkedList <String> string_data = new LinkedList<>();
     private LinkedList <Integer> int_data = new LinkedList<>();
 
@@ -39,15 +40,15 @@ public class Answear implements java.io.Serializable{
         result = result + reply + " ";
         
         Iterator<String> iterator_string = string_data.iterator();
-        while (iterator.hasNext()) {
+        while (iterator_string.hasNext()) {
             result = result + iterator_string.next() + " ";
         }
 
-        Iterator<Integer> iterator_int = string_int.iterator();
-        while (iterator.hasNext()) {
+        Iterator<Integer> iterator_int = int_data.iterator();
+        while (iterator_int.hasNext()) {
             result = result + iterator_int.next() + " ";
         }
 
-        return "Request: " + result;
+        return "Answear: " + result;
     }
 }

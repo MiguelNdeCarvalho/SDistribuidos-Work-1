@@ -1,19 +1,21 @@
+package vaccine.manager;
+
 import java.util.LinkedList;
 import java.util.Scanner;
 
 public class VaccineClient {
 
-    public static void replyHandler(Answear server_answear){
+    public static void replyHandler(Answer server_answer){
 
-        if (server_answear.getReply() == 0) {
+        if (server_answer.getReply() == 0) {
             
-        } else if (server_answear.getReply() == 1) {
+        } else if (server_answer.getReply() == 1) {
 
-        } else if (server_answear.getReply() == 1) {
+        } else if (server_answer.getReply() == 1) {
 
-        } else if (server_answear.getReply() == 1) {
+        } else if (server_answer.getReply() == 1) {
 
-        } else if (server_answear.getReply() == 1) {
+        } else if (server_answer.getReply() == 1) {
 
         }
     }
@@ -128,7 +130,7 @@ public class VaccineClient {
                 new_request = new Request();
                 new_request.setOption(5);
                                 
-            } if (option == 6) {
+            } else if (option == 6) {
                 scan.close();
                 System.exit(0);                            
             } else {

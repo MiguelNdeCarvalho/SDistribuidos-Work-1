@@ -1,3 +1,5 @@
+package vaccine.manager;
+
 public class VaccineServer {
 
     public static void main(String args[]) {

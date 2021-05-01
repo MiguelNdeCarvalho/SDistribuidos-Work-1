@@ -1,4 +1,4 @@
-//package vaccine.manager;
+package vaccine.manager;
 
 import java.util.Iterator;
 import java.util.LinkedList;

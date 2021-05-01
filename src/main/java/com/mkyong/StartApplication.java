@@ -13,7 +13,9 @@ public class StartApplication implements CommandLineRunner {
     private static final Logger log = LoggerFactory.getLogger(StartApplication.class);
 
     @Autowired
-    private CentroRepository repository;
+    private CentroRepository centroRepository;
+    @Autowired
+    private InscricaoRepository inscricaoRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(StartApplication.class, args);
@@ -24,14 +26,16 @@ public class StartApplication implements CommandLineRunner {
 
         log.info("StartApplication...");
 
-        // no segundo run, podemos comentar estas 3 linhas
-        repository.save(new Centro("Centro de Reguengos de Monsaraz", "Reguengos de Monsaraz"));
-        repository.save(new Centro("Centro de Monsaraz", "Monsaraz"));
-        repository.save(new Centro("Centro de Évora", "Évora"));
+        //centroRepository.save(new Centro("Centro de Reguengos de Monsaraz", "Reguengos de Monsaraz"));
+        //centroRepository.save(new Centro("Centro de Monsaraz", "Monsaraz"));
+        //centroRepository.save(new Centro("Centro de Évora", "Évora"));
 
-        List<Centro> queryList = repository.findByRegiaoContainingIgnoreCase("Monsaraz");
-        System.out.println("Tamanho da lista: " + queryList.size() + "\nList: " + queryList.toString());
+        //List<Centro> queryList = centroRepository.findByRegiaoContainingIgnoreCase("Monsaraz");
+        //System.out.println("Tamanho da lista: " + queryList.size() + "\nList: " + queryList.toString());
 
+        //Centro tempCentro = centroRepository.findOneByNomeContainingIgnoreCase("Évora");
+        //inscricaoReposccccccccitory.save(new Inscricao(tempCentro, "C101", "Miguel Carvalho", "Masculino", (long) 20));
+        //System.out.println(tempCentro.toString());
     }
 
 }

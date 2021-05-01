@@ -6,10 +6,11 @@ import java.util.List;
 
 public interface InscricaoRepository extends CrudRepository<Inscricao, Long> {
 
-    List<Centro> findById(long id);
-    List<Centro> findByCentro(Centro centro);
-    List<Centro> findByCodigo(String codigo);
-    List<Centro> findByNomeContainingIgnoreCase(String nome);
-    List<Centro> findByGeneroContainingIgnoreCase(String genero);
-    List<Centro> findByIdade(Long idade);
+    List<Inscricao> findById(long id);
+    Inscricao findOneByNomeContainingIgnoreCase(String nome);
+    List<Inscricao> findByCentro(Centro centro);
+    List<Inscricao> findByCodigo(String codigo);
+    List<Inscricao> findByNomeContainingIgnoreCase(String nome);
+    List<Inscricao> findByGeneroContainingIgnoreCase(String genero);
+    List<Inscricao> findByIdade(Long idade);
 }

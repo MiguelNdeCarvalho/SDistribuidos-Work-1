@@ -17,11 +17,11 @@ public class Inscricao {
 	private Long id;
 
 	@Column(nullable = false)
-    private String codigo, idCentro, nome, genero;
+    private String codigo, nome, genero;
     private Long idade;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="centroID")
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name="idCentro")
     private Centro centro;
 
     protected Inscricao() {}
@@ -37,12 +37,16 @@ public class Inscricao {
     @Override
 	public String toString() {
 		return String.format(
-				"Centro[id=%d, nomeCentro='%s', codigo='%s', nome='%s'. genero='%s', idade=%d]",
-				id, centro.getNome(), codigo, nome, genero, idade);
+				"Centro[id=%d, idCentro=%d, codigo='%s', nome='%s'. genero='%s', idade=%d]",
+				id, centro.getId(), codigo, nome, genero, idade);
 	}
     
     public Long getId() {
 		return id;
+    }
+
+    public Long getIdCentro(){
+        return centro.getId();
     }
 
     public String getCodigo() {

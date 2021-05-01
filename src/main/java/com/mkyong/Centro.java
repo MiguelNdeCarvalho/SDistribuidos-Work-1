@@ -20,8 +20,8 @@ public class Centro {
 	@Column(nullable = false)
     private String nome, regiao;
 
-    @OneToMany(mappedBy = "centro", cascade = CascadeType.ALL)
-	private List<Centro> centro;
+    @OneToMany(mappedBy = "centro", cascade = CascadeType.MERGE)
+	private List<Inscricao> inscricao;
     
     protected Centro() {}
 

@@ -101,16 +101,24 @@ public class VaccineImpl extends UnicastRemoteObject implements Vaccine, java.io
         
         //Answer
         Answer new_answer = new Answer();
-
+        //select codigo from vacinado where codigo='C2';
+        //7
         //DB acess
         
         try {
-            
-            ResultSet rs = stmt.executeQuery("SELECT id FROM centro WHERE nome ILIKE '%"+ user_request.getString_data().get(0) +"%';");
-            rs.next();
+            ResultSet rs = stmt.executeQuery("SELECT codigo FROM vacinado where codigo='"+user_request.getString_data().get(1)+"';");
+            if (rs.next()==false){
+                       
+                rs = stmt.executeQuery("SELECT id FROM centro WHERE nome ILIKE '%"+ user_request.getString_data().get(0) +"%';");
+                rs.next();
+    
+    
+                stmt.executeUpdate("INSERT INTO inscricao values('"+ user_request.getString_data().get(1) +"',"+ rs.getInt("id")+ ", '"+user_request.getString_data().get(2)+"', '"+user_request.getString_data().get(3)+"','"+user_request.getInt_data().get(0)+"','');");
+            }else{
+                new_answer.setReply(3);
+            }
 
 
-            stmt.executeUpdate("INSERT INTO inscricao values('"+ user_request.getString_data().get(1) +"',"+ rs.getInt("id")+ ", '"+user_request.getString_data().get(2)+"', '"+user_request.getString_data().get(3)+"','"+user_request.getInt_data().get(0)+"','');");
         } catch (Exception e) {
             e.printStackTrace();
             new_answer.setReply(3);

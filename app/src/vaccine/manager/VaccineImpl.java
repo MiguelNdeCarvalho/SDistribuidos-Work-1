@@ -71,7 +71,7 @@ public class VaccineImpl extends UnicastRemoteObject implements Vaccine, java.io
             e.printStackTrace();
         }
         //process
-
+        new_answer.setReply(1);
         return new_answer;
     }
 
@@ -90,7 +90,8 @@ public class VaccineImpl extends UnicastRemoteObject implements Vaccine, java.io
             e.printStackTrace();
         }
         //process
-
+        new_answer.getString_data().add(user_request.getString_data().get(0));
+        new_answer.setReply(2);
         return new_answer;
     }
 
@@ -105,10 +106,13 @@ public class VaccineImpl extends UnicastRemoteObject implements Vaccine, java.io
             stmt.executeUpdate("INSERT INTO inscricao values('"+ user_request.getString_data().get(0) +"', 1, '"+user_request.getString_data().get(1)+"', '"+user_request.getString_data().get(2)+"','"+user_request.getInt_data().get(0)+"','');");
         } catch (Exception e) {
             e.printStackTrace();
-            new_answer.setReply(0);
+            new_answer.setReply(3);
         }
         //process
-
+        if (!(new_answer.getReply()==3)) {
+            new_answer.getString_data().add(user_request.getString_data().get(0));
+            new_answer.setReply(4);
+        }
         return new_answer;
     }
 

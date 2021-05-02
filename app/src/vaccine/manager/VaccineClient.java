@@ -11,15 +11,34 @@ public class VaccineClient {
 
         if (server_answer.getReply() == 0) {
             
+            System.out.println("Pedido inválido");
+            
         } else if (server_answer.getReply() == 1) {
+            
+            String result = "Centros de saúde: ";
+
+            for (int i = 0; i<server_answer.getString_data().size();i++) {
+                result = result + server_answer.getString_data().get(i) + "; ";
+            }
+
+            System.out.println(result);
 
         } else if (server_answer.getReply() == 2) {
 
-        } else if (server_answer.getReply() == 1) {
+            //devia-se tratar da situação em que o centro não existe 
+            System.out.println("Nº de utentes á espera em "+server_answer.getString_data().get(0)+": "+ server_answer.getInt_data().get(0));
 
-        } else if (server_answer.getReply() == 1) {
+        } else if (server_answer.getReply() == 3) {
+
+            System.out.println("Pedido recusado, o codigo já está a ser utilizado");
+
+        } else if (server_answer.getReply() == 4) {
+           
+            System.out.println("Pedido aceite,com o codigo "+server_answer.getString_data().get(0));
 
         }
+/////////////////////////////////////////////////////////////
+
     }
 
     public static void main(String args[]) {

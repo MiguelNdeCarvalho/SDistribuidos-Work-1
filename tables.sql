@@ -26,12 +26,8 @@ CREATE TABLE IF NOT EXISTS vacinado  (
 
 INSERT INTO centro (nome, regiao) values('Arena de Évora','Évora');
 INSERT INTO centro (nome, regiao) values('Centro de Saúde de Reguengos de Monsaraz','Reguengos de Monsaraz');
+INSERT INTO centro (nome, regiao) values('Centro de Vacinação Municipal nas Olaias','Lisboa');
+INSERT INTO centro (nome, regiao) values('Politécnico do Porto','Porto');
 
-
-INSERT INTO inscricao values('C1', 1, 'João Pereira dos Santos Pavia Pedro Pais com K', 'Masculino', 21,'');
-
-INSERT INTO vacinado values('C2',1,'miguel','Masculino','21',NOW() ,'A');
-
-SELECT nome FROM inscricao WHERE codigo='c3';
-
-INSERT vacinado INTO ('C1','1','João Pereira dos Santos Pavia Pedro Pais com K','Masculino','NOW()','A');
+INSERT INTO inscricao values('C1', 2, 'MiguelNdeCarvalho', 'Masculino', 20,'');
+INSERT INTO inscricao values('C2', 1, 'JPeras243', 'Masculino', 21,'');

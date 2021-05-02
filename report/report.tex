@@ -1,0 +1,120 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper, total={16cm, 24cm}]{geometry}
+\usepackage[portuguese]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{tikz}
+    \usetikzlibrary{shadows}
+\usepackage{booktabs}
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{listings}
+    \renewcommand\lstlistingname{Listagem}
+    \lstset{numbers=left, numberstyle=\tiny, numbersep=5pt, basicstyle=\footnotesize\ttfamily, frame=tb,rulesepcolor=\color{gray}, breaklines=true}
+\usepackage{blindtext}
+
+% -------------------------------------------------------------------------------------------
+\title
+{
+    \includegraphics[width=0.4\textwidth]{imgs/university.png}
+    \\[0.1cm]
+    \textbf{1º Trabalho Prático} \\
+    Sistemas Distribuídos
+}
+
+\author
+{
+    \textbf{Professor:} José Saias \\
+    \textbf{Realizado por:} Miguel de Carvalho (43108), João Pereira (42864) 
+}
+\date{\today}
+
+% -------------------------------------------------------------------------------------------
+%                                Body                                                       %
+% -------------------------------------------------------------------------------------------
+
+\begin{document}
+\maketitle
+
+% -------------------------------------------------------------------------------------------
+\section{Introdução}
+
+\hspace{0,5cm}Neste trabalho foi solicitado a realização de um programa que ajude a organizar o \textbf{Sistema
+de Vacinação} de um país. \par
+
+O \textbf{Sistema de Vacinação} consiste numa aplicação que permite inscrever utilizadores para a Vacinação,
+marcar utilizadores como já vacinados entre outras funcionalidades que auxiliam a gestão da vacinação.
+
+% -------------------------------------------------------------------------------------------
+\section{Implementação}
+
+\subsection{Interfaces Answer e Request}
+
+\hspace{0,5cm} A classe \verb|Answer| e a classe \verb|Request| representam interfaces de comunicação 
+usadas entre o cliente e o servidor. O cliente envia um pedido ao servidor (Request) que será 
+interpretado pelo servidor e este irá responder (Answer) com um "Reply" que será de novo interpretado
+no lado do cliente.
+
+\subsection{Cliente}
+
+A classe \verb|VaccineClient| é o cliente usado para comunicar com o servidor.
+Serviços que são possíveis de requisitar ao servidor através do cliente:
+
+\begin{itemize}
+    \item Consulta de centros de vacinação;
+    \item Consulta do comprimento da fila de espera num centro;
+    \item Inscrição para vacinação num dos centros (indicando o nome, género e idade);
+    \item Registar a realização de vacinação prevista para a inscrição com o ćodigo X (removendo o cidadão da filade espera do centro em que se encontrava), 
+    ficando registada a data e tipo de vacina;
+    \item Reportar existência de efeitos secundários para um cidadão antes vacinado com o código C;
+    \item Listar nº total de vacinados por tipo de vacina e nº de casos com efeitos secundários por tipo de vacina. 
+\end{itemize}
+
+\subsection{VaccineImpl}
+A classe \verb|VaccineImpl| contem a implementação dos serviços listados anteriormente. Esta implementação inclui
+também o tratamento de dados e a consulta aos dados guardados na \textbf{BD}.
+
+\subsection{VaccineServer} 
+
+\hspace{0,5cm} A classe \verb|VaccineServer| é responsável por criar a conexão ao \textbf{RMI} e criar
+a conexão à \textbf{BD} usando as credenciais da mesma que estão presentes num \textbf{ficheiro de propriedades}.
+
+
+\subsection{PostgresConnector}
+
+\hspace{0,5cm} A classe \verb|PostgresConnector| é responsável por realizar a conexão a uma \textbf{BD PostgreSQL} e
+permite realizar operações na mesma.
+
+\subsection{Vaccine}
+
+\hspace{0,5cm} A interface \verb|Vaccine| implementa os metodos que o cliente pode usar para
+aceder remotamente ao \textbf{servidor}.
+
+% -------------------------------------------------------------------------------------------
+\section{Execução}
+
+\begin{itemize}
+    \item 1º passo - importar o ficheiro \verb|db.sql| para a \textbf{base de dados};
+    \item 2º passo - alterar as credenciais de acesso à \textbf{base de dados} no ficheiro
+    \verb|credentials.properties| dentro da pasta \verb|resources|;
+    \item 3º passo - compilar as classes todas com o comando \verb|make all|;
+    \item 4º passo - executar o \textbf{RMIRegistry} através do comando \verb|make registry|;
+    \item 5º passo - iniciar o servidor através do comando \verb|make server| num novo terminal;
+    \item 6º passo - iniciar o cliente através do comando \verb|make client| num novo terminal.
+\end{itemize}
+
+% -------------------------------------------------------------------------------------------
+\section{Conclusão}
+
+\hspace{0,5cm}Assim com a realização deste trabalho conseguimos criar uma \textbf{Sistema}
+(Servidor/Aplicação) que permite gerir um \textbf{Sistema de Vacinação}.
+
+Em suma, com a realização deste trabalho ficámos muito mais esclarecidos de como funciona o
+\textbf{RMI} em junção com a \textbf{serialização} e como funciona o conector do \textbf{PostgreSQL}
+na linguagem \textbf{Java}.
+
+Saliento também que neste trabalho aplicámos todo o conhecimento que adquirimos durante as aulas e que
+ajudou a compreender alguns pontos que não tínhamos entendido tão bem.
+% -------------------------------------------------------------------------------------------
+\end{document}

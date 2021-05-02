@@ -1,10 +1,19 @@
 package vaccine.manager;
 
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Properties;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 public class VaccineServer {
 
     public static void main(String args[]) {
 
 	int regPort= 1099; // default RMIRegistry port
+	
+	
+	Properties prop = new Properties();
 
 	if (args.length !=1) { // obrigar à presenca de um argumento
 	    System.out.println("Usage: java sd.rmi.VaccineServer registryPort");
@@ -15,10 +24,12 @@ public class VaccineServer {
 	try {
 	    // ATENÇÃO: este porto é relativo ao binder e não ao servidor RMI
 	    regPort=Integer.parseInt(args[0]);
+		PostgresConnector pc = new PostgresConnector("wg.miguelndecarvalho.pt", "db1", "user1", "2RJkmULqFgLAXK2NEbHi");
+		pc.connect();
 
+		Statement stmt = pc.getStatement();
 	    // criar um Objeto Remoto
-	    Vaccine obj= new VaccineImpl();
-
+	    Vaccine obj= new VaccineImpl(stmt);
 
 	    // Serviço de Nomes
             /**
@@ -35,14 +46,10 @@ public class VaccineServer {
 	    // Bind. Args: nome do serviço e objeto remoto
 	    registry.rebind("vaccine", obj);
 
-	    /*
-	      OUTRO MODO, indicando o servidor remoto para o serviço de nomes
-	    java.rmi.Naming.rebind("rmi://"+regHost+":"+regPort+"/Vaccine", stub);	    
-	    */
-            
+
 	    System.out.println("RMI object bound to service in registry");
 
-            System.out.println("servidor pronto");
+		System.out.println("servidor pronto");
 	} 
 	catch (Exception ex) {
 	    ex.printStackTrace();

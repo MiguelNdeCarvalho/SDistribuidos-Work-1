@@ -7,11 +7,13 @@ public class VaccineClient {
 
     public static void replyHandler(Answer server_answer){
 
+        System.out.println(server_answer);
+
         if (server_answer.getReply() == 0) {
             
         } else if (server_answer.getReply() == 1) {
 
-        } else if (server_answer.getReply() == 1) {
+        } else if (server_answer.getReply() == 2) {
 
         } else if (server_answer.getReply() == 1) {
 
@@ -48,11 +50,12 @@ public class VaccineClient {
 
             System.out.println("-----MENU-----");
             System.out.println("1- Consulta de Centros de Vacinação (Nome + Comprimento)");
-            System.out.println("2- Inscrição para a vacina (Enviar Nome, Genero e Idade)");
-            System.out.println("3- Reportar Efeitos Secundários (antes da realização da vacina)");
-            System.out.println("4- Realização de uma vacina ( com codigo X --> remover o cidadão da lista de espera do centro onde se encontrava)");
-            System.out.println("5- Estatistica");
-            System.out.println("6- EXIT");
+            System.out.println("2- Consultar a fila de espera de um Centro de Vacinação");
+            System.out.println("3- Inscrição para a vacina (Enviar Nome, Genero e Idade)");
+            System.out.println("4- Reportar Efeitos Secundários (antes da realização da vacina)");
+            System.out.println("5- Realização de uma vacina ( com codigo X --> remover o cidadão da lista de espera do centro onde se encontrava)");
+            System.out.println("6- Estatistica");
+            System.out.println("7- EXIT");
 
             Request new_request = new Request();
 
@@ -62,21 +65,30 @@ public class VaccineClient {
             
             if (option == 1) {
                 
-                System.out.print("Insira a região do centro: ");
-                lidos = System.in.read(b, 0, 256);
-                String region = new String(b, 0, lidos - 1);
-
                 new_request = new Request();
                 new_request.setOption(1);
-                new_request.getString_data().add(region);
 
             } else if (option == 2) {
+
+                System.out.print("Insira o nome do centro: ");
+                lidos = System.in.read(b, 0, 256);
+                String centro = new String(b, 0, lidos - 1);
+
+                new_request = new Request();
+                new_request.setOption(2);
+                new_request.getString_data().add(centro);
+
+            } else if (option == 3) {
+
+                System.out.print("Insira o código: ");
+                lidos = System.in.read(b, 0, 256);
+                String cod = new String(b, 0, lidos - 1);
 
                 System.out.print("Insira o nome: ");
                 lidos = System.in.read(b, 0, 256);
                 String name = new String(b, 0, lidos - 1);
 
-                System.out.print("Insira o genero (1 -> M; 2 -> F):");
+                System.out.print("Insira o genero: ");
                 lidos = System.in.read(b, 0, 256);
                 String gen = new String(b, 0, lidos - 1);
 
@@ -86,12 +98,13 @@ public class VaccineClient {
                 String age = new String(b, 0, lidos - 1);
 
                 new_request = new Request();
-                new_request.setOption(2);
+                new_request.setOption(3);
+                new_request.getString_data().add(cod);
                 new_request.getString_data().add(name);
-                new_request.getInt_data().add(Integer.parseInt(gen));
+                new_request.getString_data().add(gen);
                 new_request.getInt_data().add(Integer.parseInt(age));
 
-            } else if (option == 3) {
+            }else if (option == 4) {
                 
                 System.out.print("Insira o cod: ");
                 lidos = System.in.read(b, 0, 256);
@@ -105,32 +118,40 @@ public class VaccineClient {
 
                     lidos = System.in.read(b, 0, 256);
                     efec = new String(b, 0, lidos - 1);
-                    secEfects.add(efec);
+                    if(!efec.equals("nao")){
+                        secEfects.add(efec);
+                    }
                     System.out.print("Mais algum?: ");
                 }
 
                 new_request = new Request();
-                new_request.setOption(3);
-                new_request.getInt_data().add(Integer.parseInt(cod));
+                new_request.setOption(4);
                 new_request.setString_data(secEfects);
+                new_request.getString_data().add(cod);
 
 
-            } else if (option == 4) {
+            } else if (option == 5) {
                 
                 System.out.print("Insira o cod: ");
                 lidos = System.in.read(b, 0, 256);
                 String cod = new String(b, 0, lidos - 1);
 
-                new_request = new Request();
-                new_request.setOption(4);
-                new_request.getInt_data().add(Integer.parseInt(cod));
+                System.out.print("Insira o tipo da vacina: ");
+                lidos = System.in.read(b, 0, 256);
+                String vac = new String(b, 0, lidos - 1);
 
-            } else if (option == 5) {
-                
                 new_request = new Request();
                 new_request.setOption(5);
-                                
+                new_request.getString_data().add(cod);
+                new_request.getString_data().add(vac);
+
+
             } else if (option == 6) {
+                
+                new_request = new Request();
+                new_request.setOption(6);
+                                
+            } else if (option == 7) {
                 scan.close();
                 System.exit(0);                            
             } else {

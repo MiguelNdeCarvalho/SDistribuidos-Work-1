@@ -82,7 +82,10 @@ public class VaccineImpl extends UnicastRemoteObject implements Vaccine, java.io
 
         //DB acess
         try {
-            ResultSet rs = stmt.executeQuery("WITH x as (SELECT id FROM CENTRO WHERE nome='" + user_request.getString_data().get(0) +"') SELECT COUNT(DISTINCT codigo) AS c from inscricao where centroid=(SELECT id FROM x);");
+            ResultSet rs = stmt.executeQuery("SELECT nome,id FROM centro WHERE nome ILIKE '%"+ user_request.getString_data().get(0)+"%';");
+            rs.next(); 
+            new_answer.getString_data().add(rs.getString("nome"));
+            rs = stmt.executeQuery("SELECT COUNT(DISTINCT codigo) AS c from inscricao where centroid='"+rs.getString("id")+"';");
             rs.next();   
             new_answer.getInt_data().add(rs.getInt("c"));
         } catch (Exception e) {
@@ -90,7 +93,6 @@ public class VaccineImpl extends UnicastRemoteObject implements Vaccine, java.io
             e.printStackTrace();
         }
         //process
-        new_answer.getString_data().add(user_request.getString_data().get(0));
         new_answer.setReply(2);
         return new_answer;
     }
@@ -101,16 +103,21 @@ public class VaccineImpl extends UnicastRemoteObject implements Vaccine, java.io
         Answer new_answer = new Answer();
 
         //DB acess
-
+        
         try {
-            stmt.executeUpdate("INSERT INTO inscricao values('"+ user_request.getString_data().get(0) +"', 1, '"+user_request.getString_data().get(1)+"', '"+user_request.getString_data().get(2)+"','"+user_request.getInt_data().get(0)+"','');");
+            
+            ResultSet rs = stmt.executeQuery("SELECT id FROM centro WHERE nome ILIKE '%"+ user_request.getString_data().get(0) +"%';");
+            rs.next();
+
+
+            stmt.executeUpdate("INSERT INTO inscricao values('"+ user_request.getString_data().get(1) +"',"+ rs.getInt("id")+ ", '"+user_request.getString_data().get(2)+"', '"+user_request.getString_data().get(3)+"','"+user_request.getInt_data().get(0)+"','');");
         } catch (Exception e) {
             e.printStackTrace();
             new_answer.setReply(3);
         }
         //process
         if (!(new_answer.getReply()==3)) {
-            new_answer.getString_data().add(user_request.getString_data().get(0));
+            new_answer.getString_data().add(user_request.getString_data().get(1));
             new_answer.setReply(4);
         }
         return new_answer;
@@ -126,7 +133,7 @@ public class VaccineImpl extends UnicastRemoteObject implements Vaccine, java.io
             int size = user_request.getString_data().size();
 
             for (int i = 0; i<size-1;i++) {
-                result = result + user_request.getString_data().get(i) + " ";
+                result = result + user_request.getString_data().get(i) + " | ";
             }
             stmt.executeUpdate("UPDATE inscricao SET efeitossecundarios = '"+ result +"' WHERE codigo = '" + user_request.getString_data().get(size-1) +"';");
         } catch (Exception e) {
@@ -141,12 +148,7 @@ public class VaccineImpl extends UnicastRemoteObject implements Vaccine, java.io
 
         Answer new_answer = new Answer();
 
-        //SELECT codigo,centroID,nome,genero,idade FROM inscricao WHERE codigo='C1';
-        //INSERT INTO vacinado VALUES ('c2',1 ,'nome', 'masculino', 10, NOW(), 'top');
-        //DELETE FROM vacinado WHERE codigo='c2';
-        
         try {
-            System.out.println("SELECT codigo,centroID,nome,genero,idade FROM inscricao WHERE codigo='"+user_request.getString_data().get(0)+"';");
             ResultSet rs = stmt.executeQuery("SELECT codigo,centroID,nome,genero,idade FROM inscricao WHERE codigo='"+user_request.getString_data().get(0)+"';");
             rs.next();   
             String cod = rs.getString("codigo");

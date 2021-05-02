@@ -49,6 +49,6 @@ public class Answer implements java.io.Serializable{
             result = result + iterator_int.next() + " ";
         }
 
-        return "Answear: " + result;
+        return "Answer: " + result;
     }
 }

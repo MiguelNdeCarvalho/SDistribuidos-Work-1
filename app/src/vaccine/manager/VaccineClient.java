@@ -7,15 +7,13 @@ public class VaccineClient {
 
     public static void replyHandler(Answer server_answer){
 
-        System.out.println(server_answer);
-
         if (server_answer.getReply() == 0) {
             
             System.out.println("Pedido inválido");
             
         } else if (server_answer.getReply() == 1) {
             
-            String result = "Centros de saúde: ";
+            String result = "Centros de vacinação: ";
 
             for (int i = 0; i<server_answer.getString_data().size();i++) {
                 result = result + server_answer.getString_data().get(i) + "; ";
@@ -26,7 +24,7 @@ public class VaccineClient {
         } else if (server_answer.getReply() == 2) {
 
             //devia-se tratar da situação em que o centro não existe 
-            System.out.println("Nº de utentes á espera em "+server_answer.getString_data().get(0)+": "+ server_answer.getInt_data().get(0));
+            System.out.println("Nº de utentes à espera no(a) "+server_answer.getString_data().get(0)+": "+ server_answer.getInt_data().get(0));
 
         } else if (server_answer.getReply() == 3) {
 
@@ -46,34 +44,28 @@ public class VaccineClient {
 
         }else if (server_answer.getReply() == 7) {
            
-            System.out.println("ERRO: Codigo Inválido ou Já existente ("+server_answer.getString_data().get(0)+")");
+            System.out.println("ERRO: Codigo inválido ou já se encontra vacinado ("+server_answer.getString_data().get(0)+")");
 
         }else if (server_answer.getReply() == 8) {
            
             System.out.println("----------------------------------");
-            System.out.println("----V-----||-----T----");
-
             for (int i = 0; i<server_answer.getString_data().size();i++) {
-                System.out.println(server_answer.getString_data().get(i) + "     ||     " + server_answer.getInt_data().get(i));
+                System.out.println(server_answer.getString_data().get(i) + " -> " + server_answer.getInt_data().get(i) + " vacinados");
             }
             System.out.println("----------------------------------");
 
         }
-/////////////////////////////////////////////////////////////
-
     }
 
     public static void main(String args[]) {
-	String regHost = "localhost";
-	String regPort = "3333";  // porto do binder
 
 	if (args.length != 2) { // requer 3 argumentos
 	    System.out.println
 		("Usage: java sd.rmi.VaccineClient registryHost registryPort ");
 	    System.exit(1);
-	}
-	regHost= args[0];
-	regPort= args[1];
+    }
+	String regHost= args[0];
+	String regPort= args[1];
 
 
 	try {
@@ -90,17 +82,17 @@ public class VaccineClient {
         while (true) {
 
             System.out.println("-----MENU-----");
-            System.out.println("1- Consulta de Centros de Vacinação (Nome + Comprimento)");
+            System.out.println("1- Consulta de Centros de Vacinação");
             System.out.println("2- Consultar a fila de espera de um Centro de Vacinação");
-            System.out.println("3- Inscrição para a vacina (Enviar Nome, Genero e Idade)");
-            System.out.println("4- Reportar Efeitos Secundários (antes da realização da vacina)");
-            System.out.println("5- Realização de uma vacina ( com codigo X --> remover o cidadão da lista de espera do centro onde se encontrava)");
+            System.out.println("3- Inscrição para a vacina");
+            System.out.println("4- Reportar Efeitos Secundários");
+            System.out.println("5- Realização de uma vacina");
             System.out.println("6- Estatistica");
-            System.out.println("7- EXIT");
+            System.out.println("7- Sair");
 
             Request new_request = new Request();
 
-            System.out.print("Insert option: ");
+            System.out.print("Inserir opção: ");
             s = scan.nextLine();
             option = Integer.parseInt(s);
             
@@ -121,6 +113,10 @@ public class VaccineClient {
 
             } else if (option == 3) {
 
+                System.out.print("Insira o centro: ");
+                lidos = System.in.read(b, 0, 256);
+                String centro = new String(b, 0, lidos - 1);
+
                 System.out.print("Insira o código: ");
                 lidos = System.in.read(b, 0, 256);
                 String cod = new String(b, 0, lidos - 1);
@@ -140,6 +136,7 @@ public class VaccineClient {
 
                 new_request = new Request();
                 new_request.setOption(3);
+                new_request.getString_data().add(centro);
                 new_request.getString_data().add(cod);
                 new_request.getString_data().add(name);
                 new_request.getString_data().add(gen);

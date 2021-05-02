@@ -155,8 +155,6 @@ public class VaccineImpl extends UnicastRemoteObject implements Vaccine, java.io
             String gen = rs.getString("genero");
             int age = rs.getInt("idade");
 
-            System.out.println("ola");
-
             stmt.executeUpdate("INSERT INTO vacinado  VALUES ('"+ cod +"','"+centro+"','"+name+"','"+gen+"','"+age+"',NOW(),'"+user_request.getString_data().get(1)+"');");
             stmt.executeUpdate("DELETE FROM inscricao WHERE codigo = '" + user_request.getString_data().get(0) +"';");
 
@@ -179,11 +177,23 @@ public class VaccineImpl extends UnicastRemoteObject implements Vaccine, java.io
         //DB acess
         //SELECT tipo,COUNT(DISTINCT(codigo)) from vacinado group by tipo;
 
-        //process
-
-        //Answer
         Answer new_answer = new Answer();
+        
+        try {
+            ResultSet rs = stmt.executeQuery("SELECT tipo,(COUNT(DISTINCT(codigo))) as c from vacinado group by tipo;");
+            while (rs.next()) {
+                String vac = rs.getString("tipo");
+                int total = rs.getInt("c");
+                new_answer.getString_data().add(vac);
+                new_answer.getInt_data().add(total);
+            }
 
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        new_answer.setReply(8);
         return new_answer;
     }
 

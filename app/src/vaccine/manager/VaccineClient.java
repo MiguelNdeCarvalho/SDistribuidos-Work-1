@@ -48,6 +48,16 @@ public class VaccineClient {
            
             System.out.println("ERRO: Codigo Inválido ou Já existente ("+server_answer.getString_data().get(0)+")");
 
+        }else if (server_answer.getReply() == 8) {
+           
+            System.out.println("----------------------------------");
+            System.out.println("----V-----||-----T----");
+
+            for (int i = 0; i<server_answer.getString_data().size();i++) {
+                System.out.println(server_answer.getString_data().get(i) + "     ||     " + server_answer.getInt_data().get(i));
+            }
+            System.out.println("----------------------------------");
+
         }
 /////////////////////////////////////////////////////////////
 

@@ -133,6 +133,7 @@ public class VaccineImpl extends UnicastRemoteObject implements Vaccine, java.io
             e.printStackTrace();
         }
 
+        new_answer.setReply(5);
         return new_answer;
     }
 
@@ -145,6 +146,7 @@ public class VaccineImpl extends UnicastRemoteObject implements Vaccine, java.io
         //DELETE FROM vacinado WHERE codigo='c2';
         
         try {
+            System.out.println("SELECT codigo,centroID,nome,genero,idade FROM inscricao WHERE codigo='"+user_request.getString_data().get(0)+"';");
             ResultSet rs = stmt.executeQuery("SELECT codigo,centroID,nome,genero,idade FROM inscricao WHERE codigo='"+user_request.getString_data().get(0)+"';");
             rs.next();   
             String cod = rs.getString("codigo");
@@ -153,6 +155,7 @@ public class VaccineImpl extends UnicastRemoteObject implements Vaccine, java.io
             String gen = rs.getString("genero");
             int age = rs.getInt("idade");
 
+            System.out.println("ola");
 
             stmt.executeUpdate("INSERT INTO vacinado  VALUES ('"+ cod +"','"+centro+"','"+name+"','"+gen+"','"+age+"',NOW(),'"+user_request.getString_data().get(1)+"');");
             stmt.executeUpdate("DELETE FROM inscricao WHERE codigo = '" + user_request.getString_data().get(0) +"';");
@@ -160,8 +163,14 @@ public class VaccineImpl extends UnicastRemoteObject implements Vaccine, java.io
 
         } catch (Exception e) {
             e.printStackTrace();
+            new_answer.getString_data().add(user_request.getString_data().get(0));
+            new_answer.setReply(7);
         }
 
+        if (!(new_answer.getReply()==7)) {
+            new_answer.getString_data().add(user_request.getString_data().get(0));
+            new_answer.setReply(6);
+        }
         return new_answer;
     }
 

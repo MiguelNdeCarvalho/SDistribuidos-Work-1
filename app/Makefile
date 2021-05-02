@@ -1,8 +1,6 @@
 port = 9000
 
-all:
-	clean
-	compile
+all: clean compile
 
 clean:
 	rm -rf build

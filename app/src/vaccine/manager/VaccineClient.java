@@ -36,6 +36,18 @@ public class VaccineClient {
            
             System.out.println("Pedido aceite,com o codigo "+server_answer.getString_data().get(0));
 
+        }else if (server_answer.getReply() == 5) {
+           
+            System.out.println("Efeitos Secundários Guardados (se o codigo for válido)");
+
+        }else if (server_answer.getReply() == 6) {
+           
+            System.out.println("Vacinação Realizada ("+server_answer.getString_data().get(0)+")");
+
+        }else if (server_answer.getReply() == 7) {
+           
+            System.out.println("ERRO: Codigo Inválido ou Já existente ("+server_answer.getString_data().get(0)+")");
+
         }
 /////////////////////////////////////////////////////////////
 

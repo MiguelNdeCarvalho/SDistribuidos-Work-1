@@ -1,31 +1,32 @@
 package vaccine.manager;
 
-import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Properties;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 
 
 public class VaccineServer {
 
+	private static String dbHost;
+	private static String dbName;
+	private static String dbUsername;
+	private static String dbPassword;
     public static void main(String args[]) {
-
-	int regPort= 1099; // default RMIRegistry port
 	
-	try (InputStream input = new FileInputStream("credentials.properties")) {
+	try (InputStream input = new FileInputStream("resources/credentials.properties")) {
 	
 		Properties prop = new Properties();
 		prop.load(input);
 
-		final String dbHost = prop.getProperty("db.host");
-		final String dbName = prop.getProperty("db.name");
-		final String dbUsername = prop.getProperty("db.username");
-		final String dbPassword = prop.getProperty("db.password");
-	} catch (IOException ex) {
-		ex.printStackTrace();
+		dbHost = prop.getProperty("db.host");
+		dbName = prop.getProperty("db.name");
+		dbUsername = prop.getProperty("db.username");
+		dbPassword = prop.getProperty("db.password");
+	} catch (IOException e) {
+		System.out.println("The credentials.properties file couldn't be find in the resources folder");
+		System.exit(1);
 	}
 
 	if (args.length !=1) { // obrigar à presenca de um argumento
@@ -36,7 +37,7 @@ public class VaccineServer {
 
 	try {
 	    // ATENÇÃO: este porto é relativo ao binder e não ao servidor RMI
-	    regPort=Integer.parseInt(args[0]);
+	    int regPort=Integer.parseInt(args[0]);
 		PostgresConnector pc = new PostgresConnector(dbHost, dbName,dbUsername, dbPassword);
 		pc.connect();
 
